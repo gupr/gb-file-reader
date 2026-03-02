@@ -1,0 +1,35 @@
+# Build folder
+/build/
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Visual Studio files
+*.vcxproj*
+*.sln
+*.filters
+*.user
+*.VC.db
+*.VC.opendb
+
+# Compiled binaries
+*.exe
+*.dll
+*.lib
+*.obj
+*.pdb
+
+# VS Code settings (optional)
+.vscode/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# ROM files (VERY IMPORTANT)
+*.gb
+*.gbc
+*.bin
