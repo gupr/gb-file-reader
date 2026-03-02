@@ -22,14 +22,13 @@ Makefile
 *.obj
 *.pdb
 
-# VS Code settings (optional)
+# VS Code settings 
 .vscode/
 
-# OS junk
+# OS 
 .DS_Store
 Thumbs.db
 
-# ROM files (VERY IMPORTANT)
 *.gb
 *.gbc
 *.bin

@@ -32,11 +32,21 @@ void RomHeader::parseHeader(const std::vector<uint8_t> &romData)
     cartridgeType = romData[CARTRIDGE_TYPE_OFFSET];
     romSizeCode = romData[ROM_SIZE_OFFSET];
     destination = romData[0x14A];
+    checksumValid = validateChecksum(romData);
 }
 
+// Validate the checksum of the header. The checksum is calculated by summing bytes 0x0134 to 0x014C
 bool RomHeader::validateChecksum(const std::vector<uint8_t> &romData)
 {
-    return true;
+    if (romData.size() <= HEADER_CHECKSUM_OFFSET)
+        return false;
+
+    uint8_t checksum = 0;
+    for (size_t i = CHECKSUM_START; i <= CHECKSUM_END; ++i)
+    {
+        checksum = checksum - romData[i] - 1;
+    }
+    return checksum == romData[HEADER_CHECKSUM_OFFSET];
 }
 
 std::string RomHeader::getTitle() const
