@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 {
     if (argc < 2)
     {
-        cout << "Usage: gb-rom-reader <rom-file>\n";
+        cout << "Usage: gb-file-reader <rom-file>\n";
         return 1;
     }
 
@@ -39,6 +39,7 @@ int main(int argc, char *argv[])
 
     header.getDestination() == 0x00 ? cout << "Destination: Japanese\n" : cout << "Destination: Non-Japanese\n";
     cout << "Checksum Valid: " << (header.isChecksumValid() ? "Yes" : "No") << endl;
+    cout << "Nintendo Logo Valid: " << (header.getLogoValid() ? "Yes" : "No") << endl;
 
     return 0;
 }
