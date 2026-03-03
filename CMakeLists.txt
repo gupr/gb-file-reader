@@ -9,4 +9,9 @@ add_executable(gb-file-reader
     src/main.cpp
     src/RomReader.cpp
     src/RomHeader.cpp
+    src/TileDecoder.cpp
+    src/ImageWriter.cpp
+    src/RomCorruptor.cpp
 )
+
+target_include_directories(gb-file-reader PRIVATE include)
