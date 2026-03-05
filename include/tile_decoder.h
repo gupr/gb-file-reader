@@ -5,7 +5,7 @@
 class TileDecoder
 {
 public:
-    static PixelBuffer DecodeAllTiles(
+    static PixelBuffer decode_all_tiles(
         const ByteBuffer &rom,
         int tilesPerRow,
         int &outWidth,

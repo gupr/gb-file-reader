@@ -1,4 +1,4 @@
-#include "RomReader.h"
+#include "rom_reader.h"
 
 #include <fstream>
 #include <iostream>
@@ -15,19 +15,19 @@ namespace
 RomReader::RomReader(const std::string &filePath)
 {
     valid = false;
-    loadFile(filePath);
+    load_file(filePath);
 }
 
 // ================================
 // Public Methods
 // ================================
 
-bool RomReader::isValid() const
+bool RomReader::is_valid() const
 {
     return valid;
 }
 
-const std::vector<uint8_t> &RomReader::getData() const
+const std::vector<uint8_t> &RomReader::get_data() const
 {
     return romData;
 }
@@ -37,7 +37,7 @@ const std::vector<uint8_t> &RomReader::getData() const
 // ================================
 
 // Load the .gb file with the given filePath
-void RomReader::loadFile(const std::string &filePath)
+void RomReader::load_file(const std::string &filePath)
 {
     // Open the file
     std::ifstream file(filePath, std::ios::binary);

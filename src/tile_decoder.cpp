@@ -1,7 +1,7 @@
-#include "TileDecoder.h"
+#include "tile_decoder.h"
 #include <stdexcept>
 
-PixelBuffer TileDecoder::DecodeAllTiles(
+PixelBuffer TileDecoder::decode_all_tiles(
     const ByteBuffer &rom,
     int tilesPerRow,
     int &outWidth,

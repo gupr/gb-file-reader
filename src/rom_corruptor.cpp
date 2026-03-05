@@ -1,4 +1,4 @@
-#include "RomCorruptor.h"
+#include "rom_corruptor.h"
 #include <random>
 #include <algorithm>
 
@@ -31,7 +31,7 @@ void RomCorruptor::corrupt(std::vector<uint8_t> &romData,
     if (tilesToCorrupt == 0)
         return;
 
-    // Deterministic RNG
+    // RNG
     std::mt19937 rng(seed ? seed : std::random_device{}());
 
     // Create unique tile index list
@@ -52,7 +52,6 @@ void RomCorruptor::corrupt(std::vector<uint8_t> &romData,
 
         for (size_t b = 0; b < TILE_SIZE; ++b)
         {
-            // Intensity controls probability per byte
             if (chance(rng) < intensity)
             {
                 // Flip 1 random bit

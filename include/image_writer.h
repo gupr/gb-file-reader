@@ -5,7 +5,7 @@
 class ImageWriter
 {
 public:
-    static void WritePNG(
+    static void write_png(
         const std::string &path,
         const PixelBuffer &pixels,
         int width,
@@ -14,7 +14,7 @@ public:
         size_t romSizeBytes);
 
 private:
-    static void RenderFooter(
+    static void render_footer(
         std::vector<uint8_t> &rgb,
         int width,
         int height,

@@ -1,4 +1,4 @@
-#include "RomHeader.h"
+#include "rom_header.h"
 #include <stdexcept>
 
 // Game Boy ROM header offsets
@@ -25,10 +25,10 @@ RomHeader::RomHeader(const std::vector<uint8_t> &data)
     if (data.size() < 0x0150)
         throw std::runtime_error("ROM too small to contain valid header");
 
-    parseHeader(data);
+    parse_header(data);
 }
 
-void RomHeader::parseHeader(const std::vector<uint8_t> &romData)
+void RomHeader::parse_header(const std::vector<uint8_t> &romData)
 {
     // Title: 0x0134–0x0143
     for (size_t i = 0x0134; i <= 0x0143; ++i)
@@ -42,12 +42,12 @@ void RomHeader::parseHeader(const std::vector<uint8_t> &romData)
     cartridgeType = romData[CARTRIDGE_TYPE_OFFSET];
     romSizeCode = romData[ROM_SIZE_OFFSET];
     destination = romData[0x14A];
-    checksumValid = validateChecksum(romData);
-    logoValid = validateNintendoLogo(romData);
+    checksumValid = validate_checksum(romData);
+    logoValid = validate_nintendo_logo(romData);
 }
 
 // Validate the checksum of the header. The checksum is calculated by summing bytes 0x0134 to 0x014C
-bool RomHeader::validateChecksum(const std::vector<uint8_t> &romData)
+bool RomHeader::validate_checksum(const std::vector<uint8_t> &romData)
 {
     if (romData.size() <= HEADER_CHECKSUM_OFFSET)
         return false;
@@ -60,22 +60,22 @@ bool RomHeader::validateChecksum(const std::vector<uint8_t> &romData)
     return checksum == romData[HEADER_CHECKSUM_OFFSET];
 }
 
-std::string RomHeader::getTitle() const
+std::string RomHeader::get_title() const
 {
     return title;
 }
 
-uint8_t RomHeader::getCartridgeType() const
+uint8_t RomHeader::get_cartridge_type() const
 {
     return cartridgeType;
 }
 
-uint8_t RomHeader::getRomSizeCode() const
+uint8_t RomHeader::get_rom_size_code() const
 {
     return romSizeCode;
 }
 
-size_t RomHeader::getRomSizeBytes() const
+size_t RomHeader::get_rom_size_bytes() const
 {
     if (romSizeCode <= 7)
         return 32 * 1024ULL << romSizeCode;
@@ -83,17 +83,17 @@ size_t RomHeader::getRomSizeBytes() const
     return 0; // unknown
 }
 
-uint8_t RomHeader::getDestination() const
+uint8_t RomHeader::get_destination() const
 {
     return destination;
 }
 
-bool RomHeader::isChecksumValid() const
+bool RomHeader::is_checksum_valid() const
 {
     return checksumValid;
 }
 
-bool RomHeader::validateNintendoLogo(const std::vector<uint8_t> &romData)
+bool RomHeader::validate_nintendo_logo(const std::vector<uint8_t> &romData)
 {
     for (size_t i = 0; i < sizeof(NINTENDO_LOGO); ++i)
     {
@@ -103,7 +103,7 @@ bool RomHeader::validateNintendoLogo(const std::vector<uint8_t> &romData)
     return true;
 }
 
-bool RomHeader::getLogoValid() const
+bool RomHeader::get_logo_valid() const
 {
     return logoValid;
 }

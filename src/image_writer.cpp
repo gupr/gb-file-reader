@@ -1,4 +1,4 @@
-#include "ImageWriter.h"
+#include "image_writer.h"
 #include <stdexcept>
 #include <fstream>
 #include <sstream>
@@ -16,7 +16,7 @@
 
 static constexpr int FONT_SIZE = 64;
 
-static int GetFooterHeight()
+static int get_footer_height()
 {
     return FONT_SIZE + 40;
 }
@@ -28,7 +28,7 @@ static stbtt_fontinfo g_font;
 static std::vector<uint8_t> g_fontBuffer;
 static bool g_fontLoaded = false;
 
-static void EnsureFontLoaded()
+static void ensure_font_loaded()
 {
     if (g_fontLoaded)
         return;
@@ -54,7 +54,7 @@ static void EnsureFontLoaded()
 }
 
 // Public API
-void ImageWriter::WritePNG(
+void ImageWriter::write_png(
     const std::string &path,
     const PixelBuffer &pixels,
     int width,
@@ -65,7 +65,7 @@ void ImageWriter::WritePNG(
     if (pixels.empty() || width <= 0 || height <= 0)
         throw std::runtime_error("Invalid image data.");
 
-    const int finalHeight = height + GetFooterHeight();
+    const int finalHeight = height + get_footer_height();
 
     // Build RGB buffer (with footer space)
     std::vector<uint8_t> rgb(width * finalHeight * 3);
@@ -110,11 +110,11 @@ void ImageWriter::WritePNG(
     oss << title << "  |  "
         << (romSizeBytes / 1024) << " KB";
 
-    RenderFooter(
+    render_footer(
         rgb,
         width,
         height,
-        GetFooterHeight(),
+        get_footer_height(),
         oss.str());
 
     // Save PNG
@@ -131,14 +131,14 @@ void ImageWriter::WritePNG(
 }
 
 // Text Rendering
-void ImageWriter::RenderFooter(
+void ImageWriter::render_footer(
     std::vector<uint8_t> &rgb,
     int width,
     int height,
     int footerHeight,
     const std::string &text)
 {
-    EnsureFontLoaded();
+    ensure_font_loaded();
 
     float scale = stbtt_ScaleForPixelHeight(
         &g_font, FONT_SIZE);

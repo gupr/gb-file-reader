@@ -7,11 +7,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(gb-file-reader
     src/main.cpp
-    src/RomReader.cpp
-    src/RomHeader.cpp
-    src/TileDecoder.cpp
-    src/ImageWriter.cpp
-    src/RomCorruptor.cpp
+    src/rom_reader.cpp
+    src/rom_header.cpp
+    src/tile_decoder.cpp
+    src/image_writer.cpp
+    src/rom_corruptor.cpp
 )
 
 target_include_directories(gb-file-reader PRIVATE include)

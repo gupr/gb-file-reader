@@ -3,11 +3,11 @@
 #include <string>
 #include <sstream>
 
-#include "RomReader.h"
-#include "RomHeader.h"
-#include "TileDecoder.h"
-#include "ImageWriter.h"
-#include "RomCorruptor.h"
+#include "rom_reader.h"
+#include "rom_header.h"
+#include "tile_decoder.h"
+#include "image_writer.h"
+#include "rom_corruptor.h"
 #include <fstream>
 
 using namespace std;
@@ -16,7 +16,7 @@ using namespace std;
     Decodes the entire ROM as raw 2bpp Game Boy tiles
     and writes them into a square PNG image.
 */
-static void WriteFullRomImage(const vector<uint8_t> &romData, const string &title, size_t romSize)
+static void write_full_rom_image(const vector<uint8_t> &romData, const string &title, size_t romSize)
 {
     size_t tileCount = romData.size() / 16;
 
@@ -27,7 +27,7 @@ static void WriteFullRomImage(const vector<uint8_t> &romData, const string &titl
     int width = tilesPerRow * 8;
     int height = (tileCount / tilesPerRow) * 8;
 
-    PixelBuffer image = TileDecoder::DecodeAllTiles(
+    PixelBuffer image = TileDecoder::decode_all_tiles(
         romData,
         tilesPerRow,
         width,
@@ -35,7 +35,7 @@ static void WriteFullRomImage(const vector<uint8_t> &romData, const string &titl
 
     cout << "Writing output image...\n";
     string outputName = title + "_full.png";
-    ImageWriter::WritePNG(outputName, image, width, height, title, romSize);
+    ImageWriter::write_png(outputName, image, width, height, title, romSize);
     cout << "Wrote " << outputName << "\n";
 }
 
@@ -50,39 +50,39 @@ int main(int argc, char *argv[])
     string filePath = argv[1];
 
     RomReader reader(filePath);
-    if (!reader.isValid())
+    if (!reader.is_valid())
     {
         cout << "Invalid ROM\n";
         return 1;
     }
 
-    const auto &romData = reader.getData();
+    const auto &romData = reader.get_data();
 
     cout << "Loaded: " << filePath << "\n";
     cout << "Size: " << romData.size() << " bytes\n";
 
     RomHeader header(romData);
-    cout << "Title: " << header.getTitle() << "\n";
+    cout << "Title: " << header.get_title() << "\n";
     cout << "Cartridge Type: 0x" << hex
-         << static_cast<int>(header.getCartridgeType()) << dec << "\n";
-    cout << "ROM Size: " << header.getRomSizeBytes() / 1024 << " KB\n";
+         << static_cast<int>(header.get_cartridge_type()) << dec << "\n";
+    cout << "ROM Size: " << header.get_rom_size_bytes() / 1024 << " KB\n";
     cout << "Destination: "
-         << (header.getDestination() == 0x00 ? "Japanese" : "Non-Japanese") << "\n";
+         << (header.get_destination() == 0x00 ? "Japanese" : "Non-Japanese") << "\n";
     cout << "Checksum Valid: "
-         << (header.isChecksumValid() ? "Yes" : "No") << "\n";
+         << (header.is_checksum_valid() ? "Yes" : "No") << "\n";
     cout << "Nintendo Logo Valid: "
-         << (header.getLogoValid() ? "Yes" : "No") << "\n";
+         << (header.get_logo_valid() ? "Yes" : "No") << "\n";
 
-    WriteFullRomImage(romData, header.getTitle(), header.getRomSizeBytes());
+    write_full_rom_image(romData, header.get_title(), header.get_rom_size_bytes());
 
     // Now let's corrupt!
-    std::vector<uint8_t> romBase = reader.getData();
+    std::vector<uint8_t> romBase = reader.get_data();
     // #TODO: make these user-configurable and more stable
     double corruptionPercent = 0.3;
     double corruptionIntensity = 0.15;
     RomCorruptor::corrupt(romBase, corruptionPercent, corruptionIntensity);
 
-    string corruptedName = header.getTitle() + "_corrupted.gb";
+    string corruptedName = header.get_title() + "_corrupted.gb";
     std::ofstream out(corruptedName, std::ios::binary);
     out.write(reinterpret_cast<const char *>(romBase.data()),
               romBase.size());
